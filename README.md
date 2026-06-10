@@ -1,120 +1,88 @@
-# SharePoint Architect — static edition
+# M365 Toolkit — SharePoint Architect & friends
 
-A visual, drag-and-drop editor for designing SharePoint information architecture
-(sites, libraries, pages, folders, metadata) with an integrated **security model**
-and **Microsoft Teams / channels** — built as **plain HTML + CSS + JS with zero
-dependencies and no build step**. Just open `index.html`.
-
-This is a self-contained port of the Next.js version, made to host for free on
-GitHub Pages (or any static host) without npm, Node, or a build.
-
----
-
-## Files
+A static, zero-dependency suite of Microsoft 365 tools. No npm, no build step,
+no network calls — host it on **GitHub Pages** (or any static host) as-is.
 
 ```
-sharepoint-architect-static/
-├─ index.html     # markup (topbar, sidebar, canvas, inspector)
-├─ styles.css     # full design system
-└─ app.js         # all logic (no libraries)
+sharepoint-suite/
+├─ index.html                 # hub homepage — navigation to all sub-apps
+├─ shared/
+│  ├─ theme.css               # design tokens shared by every app
+│  └─ icons.js                # shared inline-SVG icon set (ICONS map + svg())
+├─ apps/
+│  └─ architect/              # SharePoint Architect (live)
+│     ├─ index.html           # markup + script load order
+│     ├─ architect.css        # app styles
+│     ├─ config.js            # node types, palettes, constants (NODE_W = card widths)
+│     ├─ state.js             # state, history, mutate(), node/annotation ops, JSON import/export, persistence
+│     ├─ render.js            # canvas cards, edges, minimap, inspector, palette, menus, settings
+│     ├─ export.js            # branded PNG export (measure+draw layout engine, legend)
+│     ├─ interactions.js      # drag state machine, keyboard shortcuts, inline rename
+│     └─ main.js              # init(), topbar wiring, sample document
+└─ README.md
 ```
 
-No `node_modules`, no bundler, nothing to install.
+The files load as plain scripts in order (no ES modules), so the app still works
+when `index.html` is opened straight from disk **and** on GitHub Pages.
+Top-level `const`/`function` declarations are shared across the files exactly
+like the old single-file IIFE — just split into readable modules.
 
----
+## Roadmap (sub-apps)
 
-## Run locally
+The hub is designed for more apps next to the Architect:
 
-Just **double-click `index.html`** — it opens in your browser and works offline.
+- **Security Scan** — Graph-based scan for over-sharing / broken inheritance.
+- **Tenant Inventory** — read an existing tenant and import it into the canvas.
+- **PnP Provisioning** — generate PnP PowerShell from an Architect design.
 
-(Optional) to serve it like it will be online, run any static server, e.g.
-`python -m http.server` in this folder, then open `http://localhost:8000`.
+Add a folder under `apps/<name>/` and a card on the hub page. Reuse
+`shared/theme.css` + `shared/icons.js` for a consistent look. (Graph-connected
+apps will need authentication — they can still be static SPAs using MSAL.js,
+but they will no longer be fully offline.)
 
----
+## SharePoint Architect
 
-## Host free on GitHub Pages
+Visual drag-and-drop editor for SharePoint / Teams information architecture
+with a per-node security model, governance fields and branded exports.
 
-1. Create a new repo on GitHub (e.g. `sharepoint-architect`).
-2. Put these three files in the repo **root** and push:
-   ```bash
-   git init
-   git add index.html styles.css app.js README.md
-   git commit -m "SharePoint Architect (static)"
-   git branch -M main
-   git remote add origin https://github.com/<you>/sharepoint-architect.git
-   git push -u origin main
-   ```
-3. On GitHub: **Settings → Pages → Build and deployment**
-   - Source: **Deploy from a branch**
-   - Branch: **main**, folder: **/ (root)** → Save.
-4. Wait ~1 minute. Your app is live at
-   `https://<you>.github.io/sharepoint-architect/`.
+### Node types
 
-That's it — no Actions, no build, no secrets. Editing a file and pushing
-re-publishes automatically.
+- **Sites**: Hub Site, Team Site (optionally Teams-connected with channels), Communication Site
+- **Content**: Document Library, SharePoint List, Page
+- **Microsoft 365 apps**: Planner, Group Mailbox, Group Forms, OneNote Notebook
+- **Sub-items** (compact child cards): Folder, Document Set, Content Type, Metadata / term set
+- **Annotations**: Frames (tinted grouping boxes), free Text, icon stickers
 
-> Tip: you can also just drag the folder onto **Netlify Drop**
-> (app.netlify.com/drop) or **Cloudflare Pages** for instant hosting.
+### Highlights
 
----
+- Pan / zoom / snap-to-grid canvas, 4-side connections, minimap, zoom indicator
+- **Inline rename**: double-click any node title on the canvas (or press **F2**);
+  renaming a site renames only its own default Owners/Members/Visitors groups
+- Per-node security (inheritance, role assignments), governance (sensitivity
+  label, external sharing), storage & retention, metadata, Teams channels
+- Multi-select (Shift+click / Shift+drag), bulk recolor / align / distribute
+- Sidebar **search filter**, context menus, undo/redo, auto-tidy
+- **Branded PNG export**: header (name + description + logo), auto **legend** of
+  used node types, configurable background and **export scale (1×/2×/3×)**.
+  The export layout engine measures and draws with identical logic and clips or
+  wraps every label, so nothing ever renders outside a card.
+- JSON export / import — compatible with designs from the previous static
+  version and the old Next.js version
+- Auto-save to localStorage (same key as the previous version, so an existing
+  saved design carries over when hosted on the same origin)
 
-## Features
+### Deploy on GitHub Pages
 
-- **Canvas** — drag from the sidebar, pan (drag background), zoom (wheel /
-  buttons), **live snap-to-grid** while dragging, connect on **all four sides**,
-  minimap.
-- **Settings** (gear icon, top-right) — toggle snap-to-grid, change grid size,
-  show/hide the grid and the minimap, choose **curved or straight connections**,
-  set the **line thickness** and **line color** for all connections, and configure
-  the **export** (background color, a **logo** for the top-right, and a
-  **description** for the top-left header). Saved between sessions.
-- **Branded PNG export** — the exported image uses your chosen background color and
-  (when the **header** toggle is on) carries a header: the document **name +
-  description** top-left and your **logo** top-right (text auto-switches to light on
-  dark backgrounds). Frames, text and stickers are included; lines render smoothed.
-- **Multi-select** — Shift+click nodes to add/remove, or **Shift+drag** the canvas
-  to rubber-band select. Drag any selected node to move the whole group. The
-  inspector then offers **bulk actions**: recolor, set sensitivity, inherit/break
-  permissions, align (left/top/center) and distribute. Copy / cut / paste /
-  duplicate / delete all act on the whole selection.
-- **Governance per node** — a **sensitivity label** (Public / Internal /
-  Confidential / Highly Confidential) and an **external-sharing** flag
-  (Enabled / Blocked), shown as badges on the card.
-- **Storage & retention** — quota, item count and retention per site / library /
-  folder, optionally shown on the card.
-- **10 node types** — Team Site, Communication Site, Document Library,
-  SharePoint List, Page, Planner, Group Mailbox, Group Forms, Folder, Metadata.
-  Sub-items render as compact cards; the rest as full cards with a colored top bar.
-- **Annotations** (drag from the *Annotations* group in the sidebar) —
-  **Frames** (semi-transparent tinted boxes to group nodes, resizable + labelled),
-  **free-floating Text**, and **icon stickers** (Person, Mail, Building, Country),
-  each with its own color. Lightweight — no permissions/security, just a few props.
-- **Microsoft Teams** — a Team Site has a **Teams-connected** switch; when on, a
-  Teams glyph shows on the card and you manage **channels** (Standard / Private /
-  Shared) in the Inspector.
-- **Security per node** — inherit toggle, `{ principal, role }` permissions,
-  inheriting nodes show a waterfall icon, broken inheritance shows a red banner.
-  Sites auto-get **Owners / Members / Visitors** named after the site (renaming
-  the site renames only *its own* groups). Pick existing groups (or *Everyone
-  except external users*) from the dropdown.
-- **Show on card** — toggle Description / Metadata / Channels / Permissions.
-- **Appearance** — per-node color swatches and icon picker.
-- **Right-click menu** — node: color, add child, add/remove Teams, break/restore
-  inheritance, reset groups, duplicate, copy, cut, delete. Canvas: add node,
-  paste here, tidy layout, fit.
-- **Shortcuts** — Ctrl/⌘ + C / X / V / D, Delete, Esc, Ctrl/⌘+Z / Shift+Z
-  (undo/redo).
-- **Undo / Redo**, **auto-tidy layout**.
-- **Export** — PNG (renders every visible section — notes, banners, badges,
-  channels, permissions — with rounded corners) + JSON. **Import** JSON (also
-  accepts the Next.js version's JSON). **Auto-save** to `localStorage`.
+1. Push this folder's contents to a repo root.
+2. Settings → Pages → Deploy from branch → `main` / root.
+3. Done — the hub is at `https://<you>.github.io/<repo>/`.
 
----
+### Development notes
 
-## Notes / trade-offs
-
-- The canvas engine (pan/zoom/drag/connect) is hand-written vanilla JS — no React
-  Flow — to keep the app dependency-free and offline. It covers all the features
-  but is simpler than the React Flow version.
-- Designs are saved in your browser's `localStorage`. Use **Export JSON** to keep
-  a portable copy or share a design.
+- After editing any `.js` file, run `node --check <file>` — a syntax error in
+  one file prevents that file's functions from defining and blanks the app.
+- All user-entered text rendered via innerHTML must go through `esc()`.
+- Card widths exist in two places by design: `NODE_W` (config.js, used by the
+  export) and the `.node` width rules in architect.css — keep them in sync.
+- Every state mutation goes through `mutate()` so history, auto-save and
+  re-render stay consistent.

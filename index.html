@@ -3,70 +3,79 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SharePoint Architect</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>M365 Toolkit</title>
+    <link rel="stylesheet" href="shared/theme.css" />
+    <style>
+      .hub { max-width: 1040px; margin: 0 auto; padding: 56px 24px 80px; }
+      .hub-head { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+      .hub-mark { width: 44px; height: 44px; border-radius: 13px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-soft); }
+      .hub-mark svg { width: 22px; height: 22px; }
+      .hub-head h1 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+      .hub-head p { margin: 2px 0 0; font-size: 14px; color: var(--ink-muted); }
+      .hub-grid { margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+      .app-card {
+        display: flex; flex-direction: column; gap: 14px; padding: 22px;
+        background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+        text-decoration: none; color: var(--ink); box-shadow: var(--shadow-soft);
+        transition: transform .15s, box-shadow .15s, border-color .15s; position: relative;
+      }
+      .app-card.live:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 6px 24px rgba(15, 108, 189, 0.14); }
+      .app-card.soon { opacity: .72; cursor: default; }
+      .app-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+      .app-icon svg { width: 21px; height: 21px; }
+      .app-card h2 { margin: 0; font-size: 16px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+      .app-card p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--ink-muted); }
+      .pill { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; padding: 2px 8px; border-radius: 999px; }
+      .pill.live { background: #e5f3eb; color: #2c7a4b; }
+      .pill.soon { background: var(--line); color: var(--ink-muted); }
+      .open-hint { display: flex; align-items: center; gap: 6px; margin-top: auto; font-size: 12px; font-weight: 600; color: var(--accent); }
+      .open-hint svg { width: 14px; height: 14px; }
+      .hub-foot { margin-top: 48px; font-size: 12px; color: var(--ink-subtle); }
+    </style>
   </head>
   <body>
-    <div id="app">
-      <!-- Topbar -->
-      <header id="topbar">
-        <div class="brand">
-          <div class="brand-mark" data-icon="box"></div>
-          <div class="brand-text">
-            <span class="brand-sub">SharePoint Architect</span>
-            <input id="doc-name" class="doc-name" value="Untitled architecture" />
-          </div>
+    <div class="hub">
+      <div class="hub-head">
+        <div class="hub-mark" data-icon="box"></div>
+        <div>
+          <h1>M365 Toolkit</h1>
+          <p>Design, document and govern your Microsoft 365 environment.</p>
         </div>
-        <div class="toolbar">
-          <button class="tool" data-action="undo" title="Undo (Ctrl+Z)"><span data-icon="undo"></span>Undo</button>
-          <button class="tool" data-action="redo" title="Redo (Ctrl+Shift+Z)"><span data-icon="redo"></span>Redo</button>
-          <button class="tool" data-action="tidy" title="Tidy layout"><span data-icon="wand"></span>Tidy</button>
-          <span class="sep"></span>
-          <button class="tool" data-action="sample" title="Load sample"><span data-icon="refresh"></span>Sample</button>
-          <button class="tool" data-action="import"><span data-icon="upload"></span>Import</button>
-          <button class="tool" data-action="export-json"><span data-icon="download"></span>JSON</button>
-          <button class="tool primary" data-action="export-png"><span data-icon="image"></span>PNG</button>
-          <span class="sep"></span>
-          <button class="tool icon-only" data-action="settings" title="Settings"><span data-icon="settings"></span></button>
-          <input id="file-input" type="file" accept="application/json" hidden />
-        </div>
-      </header>
-
-      <div id="main">
-        <!-- Sidebar palette -->
-        <aside id="sidebar">
-          <div class="panel-head">
-            <h2>Building blocks</h2>
-            <p>Drag onto the canvas</p>
-            <p class="hint">A Team Site can be Teams-connected from the Inspector.</p>
-          </div>
-          <div id="palette"></div>
-        </aside>
-
-        <!-- Canvas -->
-        <main id="canvas">
-          <div id="viewport">
-            <div id="frames"></div>
-            <svg id="edges" xmlns="http://www.w3.org/2000/svg"></svg>
-            <div id="nodes"></div>
-            <div id="annotations"></div>
-          </div>
-          <svg id="connect-layer"><path id="connect-path" /></svg>
-          <div id="controls">
-            <button data-action="zoom-in" title="Zoom in">+</button>
-            <button data-action="zoom-out" title="Zoom out">&minus;</button>
-            <button data-action="fit" title="Fit to view"><span data-icon="maximize"></span></button>
-          </div>
-          <div id="minimap"><svg id="minimap-svg"></svg></div>
-        </main>
-
-        <!-- Inspector -->
-        <aside id="inspector"></aside>
       </div>
+
+      <div class="hub-grid">
+        <a class="app-card live" href="apps/architect/index.html">
+          <div class="app-icon" style="background:#e8f1fa;color:#0f6cbd" data-icon="layers"></div>
+          <h2>SharePoint Architect <span class="pill live">Live</span></h2>
+          <p>Visually design SharePoint &amp; Teams information architecture — sites, libraries, permissions, governance — and export branded diagrams.</p>
+          <span class="open-hint">Open app <span data-icon="arrowRight"></span></span>
+        </a>
+
+        <div class="app-card soon">
+          <div class="app-icon" style="background:#fdf3f4;color:#b0506b" data-icon="shieldCheck"></div>
+          <h2>Security Scan <span class="pill soon">Planned</span></h2>
+          <p>Scan a SharePoint tenant via Microsoft Graph for over-shared content, broken inheritance and external-sharing risks.</p>
+        </div>
+
+        <div class="app-card soon">
+          <div class="app-icon" style="background:#eef0fa;color:#4b53bc" data-icon="scan"></div>
+          <h2>Tenant Inventory <span class="pill soon">Planned</span></h2>
+          <p>Read an existing SharePoint environment and import it straight into the Architect canvas as a living diagram.</p>
+        </div>
+
+        <div class="app-card soon">
+          <div class="app-icon" style="background:#e9f4ef;color:#3f8f66" data-icon="code"></div>
+          <h2>PnP Provisioning <span class="pill soon">Planned</span></h2>
+          <p>Generate PnP PowerShell provisioning scripts directly from an Architect design — from diagram to tenant.</p>
+        </div>
+      </div>
+
+      <p class="hub-foot">Static, dependency-free, runs offline. Host on GitHub Pages or any static host.</p>
     </div>
 
-    <div id="contextmenu" hidden></div>
-
-    <script src="app.js"></script>
+    <script src="shared/icons.js"></script>
+    <script>
+      document.querySelectorAll("[data-icon]").forEach(function (el) { el.innerHTML = svg(el.dataset.icon); });
+    </script>
   </body>
 </html>

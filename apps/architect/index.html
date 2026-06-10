@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SharePoint Architect</title>
+    <link rel="stylesheet" href="../../shared/theme.css" />
+    <link rel="stylesheet" href="architect.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- Topbar -->
+      <header id="topbar">
+        <div class="brand">
+          <a class="home-link" href="../../index.html" title="Back to toolkit home" data-icon="home"></a>
+          <button class="tool icon-only" data-action="toggle-nav" title="Show / hide building blocks"><span data-icon="panelLeft"></span></button>
+          <div class="brand-mark" data-icon="layers"></div>
+          <div class="brand-text">
+            <span class="brand-sub">SharePoint Architect</span>
+            <input id="doc-name" class="doc-name" value="Untitled architecture" />
+          </div>
+        </div>
+        <div class="toolbar">
+          <div class="tool-group">
+            <button class="tool icon-only" data-action="undo" title="Undo (Ctrl+Z)"><span data-icon="undo"></span></button>
+            <button class="tool icon-only" data-action="redo" title="Redo (Ctrl+Shift+Z)"><span data-icon="redo"></span></button>
+            <button class="tool icon-only" data-action="tidy" title="Tidy layout"><span data-icon="wand"></span></button>
+          </div>
+          <span class="sep"></span>
+          <button class="tool" data-action="sample" title="Load the example design"><span data-icon="refresh"></span>Sample</button>
+          <button class="tool" data-action="import" title="Import a design JSON"><span data-icon="upload"></span>Import</button>
+          <button class="tool" data-action="export-json" title="Export the design as JSON"><span data-icon="download"></span>JSON</button>
+          <button class="tool primary" data-action="export-png" title="Export a branded PNG image"><span data-icon="image"></span>Export PNG</button>
+          <span class="sep"></span>
+          <button class="tool" data-action="present" title="Full-screen presentation for customers (Esc to exit)"><span data-icon="play"></span>Present</button>
+          <button class="tool icon-only" data-action="settings" title="Settings"><span data-icon="settings"></span></button>
+          <input id="file-input" type="file" accept="application/json" hidden />
+        </div>
+      </header>
+
+      <div id="main">
+        <!-- Sidebar palette -->
+        <aside id="sidebar">
+          <div class="panel-head">
+            <h2>Building blocks</h2>
+            <p>Drag onto the canvas · double-click a node to rename</p>
+          </div>
+          <div class="palette-search">
+            <span data-icon="search"></span>
+            <input id="palette-search" type="search" placeholder="Filter blocks…" />
+          </div>
+          <div id="palette"></div>
+        </aside>
+
+        <!-- Canvas -->
+        <main id="canvas">
+          <div id="viewport">
+            <div id="frames"></div>
+            <svg id="edges" xmlns="http://www.w3.org/2000/svg"></svg>
+            <div id="nodes"></div>
+            <div id="annotations"></div>
+          </div>
+          <svg id="connect-layer"><path id="connect-path" /></svg>
+          <div id="controls">
+            <button data-action="zoom-in" title="Zoom in">+</button>
+            <span id="zoom-label" title="Zoom level">100%</span>
+            <button data-action="zoom-out" title="Zoom out">&minus;</button>
+            <button data-action="fit" title="Fit to view"><span data-icon="maximize"></span></button>
+          </div>
+          <div id="minimap"><svg id="minimap-svg"></svg></div>
+          <button id="present-exit" data-action="present-exit" hidden><span data-icon="x"></span>Exit presentation <kbd>Esc</kbd></button>
+        </main>
+
+        <!-- Inspector -->
+        <aside id="inspector"></aside>
+      </div>
+    </div>
+
+    <div id="contextmenu" hidden></div>
+
+    <script src="../../shared/icons.js"></script>
+    <script src="config.js"></script>
+    <script src="state.js"></script>
+    <script src="render.js"></script>
+    <script src="export.js"></script>
+    <script src="interactions.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

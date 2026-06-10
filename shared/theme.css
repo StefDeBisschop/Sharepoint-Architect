@@ -1,0 +1,30 @@
+/* ===== Savaco M365 Suite — shared design tokens ===== */
+:root {
+  --bg: #f3f5f8;
+  --panel: #ffffff;
+  --ink: #15212f;
+  --ink-muted: #5b6878;
+  --ink-subtle: #939eac;
+  --line: #e3e7ed;
+  --line-strong: #cdd4dd;
+  --accent: #0f6cbd;            /* SharePoint / Fluent blue */
+  --accent-soft: #e8f1fa;
+  --teams: #4b53bc;
+  --danger: #d13438;
+  --danger-soft: #fdf3f4;
+  --radius: 12px;
+  --shadow-soft: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 16px rgba(16, 24, 40, 0.07);
+  --shadow-node: 0 1px 2px rgba(16, 24, 40, 0.05), 0 3px 10px rgba(16, 24, 40, 0.07);
+  --font: "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+button { font-family: inherit; cursor: pointer; }
+svg { display: block; }
